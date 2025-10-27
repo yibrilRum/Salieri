@@ -1,6 +1,13 @@
-from music21 import stream
-from scorecreator import io_manager
 import os
+from music21 import stream
+from scorecreator import (
+    io_manager,
+    instrument_tools,
+    note_tools,
+    harmony_tools,
+    edit_tools,
+    export_tools
+)
 
 def main():
     print("Welcome to Salieri")
@@ -61,8 +68,10 @@ def main():
         elif choice == "11":
             project_dir = os.path.join(os.getcwd(), "projects")
             os.makedirs(project_dir, exist_ok=True)
-            files = [f for f in os.listdir(project_dir
-                    if f.endswith(".m21data", ".xml"))]
+            files = [
+                f for f in os.listdir(project_dir)
+                if f.endswith((".m21data", ".xml"))
+            ]
             
             if not files:
                 print("No saved projects found.")
@@ -84,9 +93,11 @@ def main():
         elif choice == "12":
             print("\nDiletto straordinario!")
             io_manager.save_user_input("Exit program")
+            quit()
 
         else:
             print("Invalid choice. Try again.")
             io_manager.save_user_input(f"Invalid choice: {choice}")
-if __name == "__main__":
+            
+if __name__ == "__main__":
     main()

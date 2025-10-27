@@ -1,0 +1,24 @@
+2025-10-25 23:19:07 | Session started: new blank score
+2025-10-25 23:19:35 | Main menu choice: 1
+2025-10-25 23:19:46 | Instrument choice: Violin
+2025-10-25 23:19:51 | Part name: Violin I
+2025-10-25 23:19:56 | Clef choice: treble
+2025-10-25 23:20:32 | Main menu choice: 2
+2025-10-25 23:20:33 | Note entry part selection: 1
+2025-10-25 23:20:53 | Note entry: c4*4, d4*4, e4*4, d4*4
+2025-10-25 23:23:23 | Duration entry: 0.5*16
+2025-10-25 23:23:29 | Note entry: done
+2025-10-25 23:23:31 | Main menu choice: 7
+2025-10-25 23:23:32 | Display choice: 2
+2025-10-25 23:23:54 | Main menu choice: 9
+2025-10-25 23:24:02 | Save project filename: violin.m21data
+2025-10-25 23:24:06 | Main menu choice: 12
+2025-10-25 23:24:06 | Exit program
+2025-10-25 23:24:11 | Session started: new blank score
+2025-10-25 23:24:15 | Main menu choice: 11
+2025-10-25 23:24:32 | Session started: new blank score
+2025-10-25 23:29:14 | Main menu choice: 11
+2025-10-25 23:29:16 | Load filename: 1
+2025-10-25 23:29:18 | Main menu choice: 4
+2025-10-25 23:29:19 | Edit menu part selection: 1
+2025-10-25 23:31:41 | Edit input: -6 restify

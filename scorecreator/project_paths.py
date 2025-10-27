@@ -4,7 +4,7 @@ from datetime import datetime
 def get_base_dir() -> str:
     return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-def project_dir() -> str:
+def get_project_dir() -> str:
     return os.path.join(get_base_dir(), "projects")
 
 def get_log_dir() -> str:

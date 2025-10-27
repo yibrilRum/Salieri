@@ -1,0 +1,149 @@
+🧠 Problem Summary
+
+After several edit–save–load cycles, projects begin to report corruption or throw KeyError / Sites-related exceptions in music21.
+The errors appear during:
+
+Instrument deletion
+
+Adding/re-adding parts after deletion
+
+Subsequent score.parts access or stream sorting
+
+🧩 Symptoms
+
+Deleted parts still show their notes.
+
+Indicates that score.parts.remove(part) does not fully detach Part objects or their contained Note/Rest elements.
+
+“entry for this object is not stored in this Sites object”
+
+Occurs when an element’s activeSite reference points to a parent that no longer tracks it.
+
+KeyError inside sortTuple / _elements.sort
+
+Triggered when the internal Sites map and _elements list are out of sync — a Music21 corruption pattern.
+
+Projects becoming “corrupted” after saving.
+
+Pickle/MusicXML serialization captures dangling site references or partially deleted streams.
+
+⚙️ Root Cause (technical)
+
+music21.stream.Stream uses an internal bidirectional system:
+
+Each element (e.g., Note, Part, Measure) keeps a reference to every Stream that contains it (.sites).
+
+When removing an element, both the stream and the element’s .sites dictionary must be updated.
+
+You used:
+
+score.parts.remove(part)
+
+
+But .parts returns a StreamIterator, not the actual list or Stream.
+That line silently fails to detach the object correctly, corrupting the Sites structure.
+
+💡 Reproduction Steps
+
+Load a project (violin.m21data) with one part.
+
+Delete the part (Delete Instrument Part → Violin I).
+
+Add a new part (e.g., Violin II).
+
+Attempt to delete again or view parts → crash:
+
+KeyError: <some object id>
+
+
+On next load, music21 raises “corrupted file” or fails to reconstruct part hierarchy.
+
+✅ Recommended Fix Strategy
+A. Safe Deletion
+
+Replace:
+
+score.parts.remove(part)
+
+
+With:
+
+if part in score.parts.stream():
+    score.remove(part, recurse=False)
+    part.stream().clear()
+    part.elements.clear()
+    for el in list(part.elements):
+        el.sites.removeBySite(part)
+
+
+✅ Ensures all references are unlinked from both sides.
+
+B. Validation Before Save
+
+Add a helper to ensure structural integrity:
+
+def validate_score(score):
+    for part in score.parts:
+        for el in part.recurse():
+            if not hasattr(el, 'sites') or not score in el.sites:
+                print(f"⚠️  Orphan element: {el}")
+                return False
+    return True
+
+
+Then call:
+
+if not validate_score(score):
+    print("Invalid score state — not saving.")
+    return
+score.write('pkl', filepath)
+
+C. Auto-Recovery on Load
+
+Add a cleanup function:
+
+def repair_score(score):
+    for part in score.parts:
+        for el in part.recurse():
+            if el.activeSite is None:
+                part.insert(0, el)
+
+
+Call it automatically after deserializing a .m21data.
+
+D. Logging & Debug Mode
+
+Add a toggle like:
+
+DEBUG_MODE = True
+
+
+Then log:
+
+All deletion / addition actions
+
+When .sites cleanup runs
+
+Any failed .remove() or KeyError exceptions
+
+This will help trace exactly which action leads to corruption.
+
+📄 Example Issue Title
+
+[BUG] Stream corruption after part deletion → "entry not stored in Sites object" / KeyError in sortTuple
+
+Environment: macOS / Python 3.11 / music21 8.x
+Repro:
+
+Load project
+
+Delete instrument
+
+Add new instrument
+
+Delete again
+→ Crash or corrupted save
+
+Suspected cause: unsafe removal of parts via StreamIterator.
+
+Fix proposed: use score.remove(part) instead of score.parts.remove(part) and add orphan cleanup before save.

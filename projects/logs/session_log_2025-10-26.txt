@@ -1,0 +1,153 @@
+2025-10-26 00:22:04 | Session started: new blank score
+2025-10-26 00:22:16 | Main menu choice: 11
+2025-10-26 00:22:18 | Load filename: 2
+2025-10-26 00:22:23 | Main menu choice: 4
+2025-10-26 00:22:25 | Edit menu part selection: 1
+2025-10-26 00:22:29 | Edit option: m
+2025-10-26 00:22:39 | Edit index: 16
+2025-10-26 00:22:45 | Edit pitch: r
+2025-10-26 00:24:06 | Edit option: a
+2025-10-26 00:24:36 | Edit action input: 3-5 delete
+2025-10-26 00:24:48 | Edit action confirm: y
+2025-10-26 00:25:00 | Edit option: v
+2025-10-26 00:25:06 | Edit option: a
+2025-10-26 00:25:27 | Edit action input: 11-13 restify
+2025-10-26 00:25:29 | Edit action confirm: y
+2025-10-26 00:25:32 | Edit option: v
+2025-10-26 00:30:29 | Session started: new blank score
+2025-10-26 00:30:31 | Main menu choice: 11
+2025-10-26 00:30:33 | Load filename: 2
+2025-10-26 00:30:34 | Main menu choice: 4
+2025-10-26 00:30:36 | Edit menu part selection: 1
+2025-10-26 00:30:37 | Edit option: v
+2025-10-26 00:30:44 | Edit option: a
+2025-10-26 00:30:55 | Edit action input: 3-5 delete
+2025-10-26 00:30:56 | Edit action confirm: y
+2025-10-26 00:31:01 | Edit option: a
+2025-10-26 00:31:26 | Edit action input: 1,16 restify
+2025-10-26 00:31:28 | Edit action confirm: y
+2025-10-26 00:31:44 | Edit option: v
+2025-10-26 00:40:39 | Session started: new blank score
+2025-10-26 00:40:44 | Main menu choice: 11
+2025-10-26 00:40:45 | Load filename: 2
+2025-10-26 00:40:49 | Main menu choice: 2
+2025-10-26 00:40:50 | Note entry part selection: 1
+2025-10-26 00:41:02 | Note entry: d5*10
+2025-10-26 00:41:07 | Duration entry: 0.5*10
+2025-10-26 00:41:09 | Note entry: done
+2025-10-26 00:41:13 | Main menu choice: 7
+2025-10-26 00:41:14 | Display choice: 2
+2025-10-26 00:41:33 | Main menu choice: 9
+2025-10-26 00:42:25 | Save project filename: violin.m21data
+2025-10-26 00:42:43 | Main menu choice: 4
+2025-10-26 00:42:45 | Edit menu part selection: 1
+2025-10-26 00:42:48 | Edit option: a
+2025-10-26 00:43:00 | Edit action input: 3-5 delete
+2025-10-26 00:43:02 | Edit action confirm: y
+2025-10-26 00:43:04 | Edit option: v
+2025-10-26 00:43:11 | Edit option: a
+2025-10-26 00:43:22 | Edit action input: 10-23 resitfy
+2025-10-26 00:43:30 | Edit action confirm: y
+2025-10-26 00:43:46 | Edit option: v
+2025-10-26 00:44:13 | Edit option: a
+2025-10-26 00:44:25 | Edit action input: 2 transpose 2
+2025-10-26 00:44:26 | Edit action confirm: y
+2025-10-26 00:44:30 | Edit option: v
+2025-10-26 00:44:48 | Edit option: a
+2025-10-26 00:45:11 | Edit action input: 9 transpose 3
+2025-10-26 00:45:13 | Edit action confirm: y
+2025-10-26 00:45:18 | Edit option: v
+2025-10-26 00:45:53 | Edit option: a
+2025-10-26 00:46:43 | Edit action input: 1,9 delete
+2025-10-26 00:46:45 | Edit action confirm: y
+2025-10-26 00:46:49 | Edit option: v
+2025-10-26 00:47:02 | Edit option: q
+2025-10-26 00:47:04 | Main menu choice: 7
+2025-10-26 00:47:05 | Display choice: 2
+2025-10-26 00:47:30 | Main menu choice: 4
+2025-10-26 00:47:31 | Edit menu part selection: 1
+2025-10-26 00:47:37 | Edit option: a
+2025-10-26 00:48:01 | Edit action input: 1-21 delete
+2025-10-26 00:48:03 | Edit action confirm: y
+2025-10-26 00:48:05 | Edit option: v
+2025-10-26 00:48:09 | Edit option: q
+2025-10-26 00:48:10 | Main menu choice: 7
+2025-10-26 00:48:11 | Display choice: 2
+2025-10-26 00:48:38 | Main menu choice: 2
+2025-10-26 00:48:39 | Note entry part selection: 1
+2025-10-26 00:48:44 | Note entry: c4*10
+2025-10-26 00:49:13 | Duration entry: 0.5*10
+2025-10-26 00:49:16 | Note entry: done
+2025-10-26 00:49:19 | Main menu choice: 1
+2025-10-26 00:49:21 | Instrument choice: Viola
+2025-10-26 00:49:26 | Part name: Viola I
+2025-10-26 00:49:29 | Clef choice: alto
+2025-10-26 00:49:48 | Main menu choice: 2
+2025-10-26 00:49:49 | Note entry part selection: 2
+2025-10-26 00:50:10 | Note entry: e4*10
+2025-10-26 00:50:15 | Duration entry: 0.5*10
+2025-10-26 00:50:20 | Note entry: done
+2025-10-26 00:50:21 | Main menu choice: 7
+2025-10-26 00:50:22 | Display choice: 2
+2025-10-26 00:50:33 | Main menu choice: 12
+2025-10-26 00:50:33 | Exit program
+2025-10-26 00:51:08 | Session started: new blank score
+2025-10-26 00:51:11 | Main menu choice: 11
+2025-10-26 00:51:13 | Load filename: 2
+2025-10-26 00:51:14 | Main menu choice: 7
+2025-10-26 00:51:15 | Display choice: 2
+2025-10-26 00:51:30 | Main menu choice: 5
+2025-10-26 01:01:49 | Session started: new blank score
+2025-10-26 01:01:52 | Main menu choice: 11
+2025-10-26 01:01:55 | Load filename: 2
+2025-10-26 01:01:59 | Main menu choice: 4
+2025-10-26 01:02:02 | Edit menu part selection: 1
+2025-10-26 01:02:03 | Edit option: v
+2025-10-26 01:02:11 | Edit option: q
+2025-10-26 01:02:15 | Main menu choice: 5
+2025-10-26 01:03:26 | Session started: new blank score
+2025-10-26 01:03:29 | Main menu choice: 11
+2025-10-26 01:03:30 | Load filename: 2
+2025-10-26 01:03:38 | Main menu choice: 5
+2025-10-26 01:03:39 | Delete instrument selection: 1
+2025-10-26 01:03:41 | Delete instrument confirm: y
+2025-10-26 01:13:53 | Session started: new blank score
+2025-10-26 01:13:56 | Main menu choice: 11
+2025-10-26 01:13:58 | Load filename: 2
+2025-10-26 01:14:00 | Main menu choice: 4
+2025-10-26 01:14:03 | Edit menu part selection: 1
+2025-10-26 01:14:05 | Edit option: v
+2025-10-26 01:14:09 | Edit option: q
+2025-10-26 01:14:13 | Main menu choice: 5
+2025-10-26 01:14:14 | Delete instrument selection: 1
+2025-10-26 01:14:16 | Delete instrument confirm: y
+2025-10-26 01:14:21 | Main menu choice: 1
+2025-10-26 01:14:27 | Instrument choice: Violin II
+2025-10-26 01:14:43 | Session started: new blank score
+2025-10-26 01:14:46 | Main menu choice: 11
+2025-10-26 01:14:47 | Load filename: 2
+2025-10-26 01:14:49 | Main menu choice: 4
+2025-10-26 01:14:50 | Edit menu part selection: 1
+2025-10-26 01:14:51 | Edit option: v
+2025-10-26 01:14:53 | Edit option: q
+2025-10-26 01:14:57 | Main menu choice: 5
+2025-10-26 01:14:59 | Delete instrument selection: 1
+2025-10-26 01:15:01 | Delete instrument confirm: y
+2025-10-26 01:15:03 | Main menu choice: 1
+2025-10-26 01:15:07 | Instrument choice: Violin
+2025-10-26 01:15:11 | Part name: Violin II
+2025-10-26 01:15:14 | Clef choice: treble
+2025-10-26 01:15:32 | Main menu choice: 4
+2025-10-26 01:15:36 | Edit menu part selection: 1
+2025-10-26 01:15:39 | Edit option: v
+2025-10-26 01:15:41 | Edit option: q
+2025-10-26 01:30:12 | Main menu choice: 7
+2025-10-26 01:30:13 | Display choice: 2
+2025-10-26 01:30:36 | Main menu choice: 2
+2025-10-26 01:30:37 | Note entry part selection: 2
+2025-10-26 01:30:39 | Note entry: c4
+2025-10-26 01:30:41 | Duration entry: 1
+2025-10-26 01:30:42 | Note entry: don
+2025-10-26 01:31:04 | Duration entry: 1
+2025-10-26 01:31:06 | Note entry: done
+2025-10-26 01:31:09 | Main menu choice: 5

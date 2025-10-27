@@ -1,0 +1,190 @@
+🧭 Development Progress Log — 2025-10-26
+Overview
+
+Today’s session focused on stabilizing the note editing and instrument management pipeline within the Salieri scorecreator subsystem.
+We worked through:
+
+Structural path corrections (project directory handling)
+
+Extending the note editor to expose note arrays
+
+Multi-element editing actions (e.g. “restify”)
+
+Diagnosing and mitigating file corruption issues caused by repeated editing and deletion operations
+
+Debugging Music21 Sites errors linked to part deletion
+
+Creating a reproducible bug trace and strategy for a safe deletion fix
+
+✅ Completed Work
+1. Project Directory Refactor
+
+Changed storage paths from logs/ to projects/ for saved project files.
+
+Updated helper methods:
+
+def get_project_dir() -> str:
+    return os.path.join(get_base_dir(), "projects")
+
+
+Confirmed saving and loading of .m21data files now work under the projects directory.
+
+2. Note Array Exposure in Editor
+
+Extended the note editor to show both:
+
+Structured list of notes/rests
+
+Flat array representation (As array: ['C4', 'D4', ...])
+
+This supports quick selection and batch editing operations.
+
+3. Multi-Element Actions
+
+Implemented syntax for bulk edits:
+
+index spec and action (e.g. '3-5 delete', '2 transpose 2', '1,4 restify')
+
+
+Added support for:
+
+Range (3-5)
+
+Multi-select (1,4,8)
+
+Actions: delete, transpose, restify, etc.
+
+Confirmed “restify” correctly replaces Note objects with Rest objects when working on valid indices.
+
+4. Bug: Restify / Recurse Failure
+
+Observed crashes after applying multiple restifications:
+
+KeyError in stream/base.py → _elements.sort()
+
+
+Root cause: corrupted internal Sites reference map due to unsafe element mutation inside the stream.
+
+Temporary mitigation: reinsert affected elements cleanly or reload after heavy batch edits.
+
+5. Instrument Deletion Refactor
+
+Added delete_instrument() to instrument_tools.py.
+
+Fixed capitalization bug (score.Parts → score.parts).
+
+Added confirmation prompts for safe deletion.
+
+Fixed iterator misuse:
+
+# OLD — caused corruption
+score.parts.remove(part)
+
+# FIXED
+score.remove(part, recurse=False)
+
+
+Eliminated StreamIteratorInefficientWarning and verified proper removal from score.
+
+6. Residual Data After Deletion
+
+After deleting an instrument, its notes sometimes remained visible when re-added with the same name.
+
+Root cause: music21's bidirectional site tracking — elements weren’t fully unlinked from the Score’s site registry.
+
+This left dangling references and caused “entry not stored in Sites object” errors.
+
+🧨 Current Issue (Unresolved)
+[BUG] Stream corruption after part deletion and re-addition
+Symptoms
+
+After deleting an instrument part and adding another with the same or different name:
+
+Old notes sometimes persist.
+
+Following edits trigger:
+
+Error deleting instrument: an entry for this object (<music21.stream.Score ...>) is not stored in this Sites object
+
+
+On subsequent operations, KeyError occurs during sortTuple inside Music21’s internal stream sort.
+
+Repro Steps
+
+Create and save a score with one part (e.g., Violin I).
+
+Add notes, restify, or edit multiple times.
+
+Save project.
+
+Delete the part (Menu → Delete Instrument Part).
+
+Add a new part (Violin II).
+
+Attempt to delete or view parts again.
+→ Crashes or “corrupted file” warnings.
+
+Root Cause
+
+score.parts.remove(part) acts on a StreamIterator, not a real Stream.
+
+This leaves orphaned Note objects referencing a deleted site.
+
+The next recursive traversal or save triggers internal corruption errors.
+
+Proposed Fix
+if part in score.parts.stream():
+    score.remove(part, recurse=False)
+    for el in list(part.recurse()):
+        try:
+            el.sites.removeBySite(part)
+        except Exception:
+            pass
+    part.clear()
+
+Validation
+
+Add:
+
+def validate_score(score):
+    for part in score.parts:
+        for el in part.recurse():
+            if not score in el.sites:
+                print(f"⚠️ Orphan element: {el}")
+                return False
+    return True
+
+🧩 Planned Next Steps
+
+Implement Safe Deletion Patch
+
+Replace all iterator .remove() calls with explicit score.remove(part).
+
+Add cleanup_orphans() before save.
+
+Add Score Integrity Check
+
+Run validation automatically on save/load.
+
+Investigate File Corruption Reports
+
+Test repeated add–edit–delete–save cycles.
+
+Confirm that .m21data or MusicXML exports remain structurally valid.
+
+Optional:
+Add a debug command:
+
+(x) Validate internal structure
+
+
+To run validate_score() interactively before save/export.
+
+🗒️ Summary
+Category	Status	Notes
+Directory refactor	✅ Done	projects/ directory active
+Note editor array	✅ Done	Multi-view listing added
+Multi-element editing	✅ Done	Range and multi-index actions supported
+Restify action	⚠️ Partial	Works, but can trigger Sites corruption
+Instrument deletion	⚠️ Partial	Now functional but still unsafe in Music21
+Corruption detection	🚧 In Progress	Root cause isolated; cleanup pending

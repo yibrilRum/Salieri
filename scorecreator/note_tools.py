@@ -1,6 +1,23 @@
 from music21 import note, chord, duration, stream
 from scorecreator import io_manager
 
+def parse_durations(dur_input, n_elements):
+    dur_list = []
+    try:
+        tokens = [t.strip() for t in dur_input.split(",")]
+        for token in tokens:
+            if "*" in token:
+                val, times = token.split("*")
+                dur_list.extend([duration.Duration(float(val))]*int(times))
+            else:
+                dur_list.append(duration.Duration(float(token)))
+        while len(dur_list) < n_elements:
+            dur_list.append(dur_list[-1])
+    except Exception as e:
+        print(f"Error parsing durations: {e}. Defaulting to quarter.")
+        dur_list = [duration.Duration("quarter")]*n_elements
+    return dur_list
+
 def add_notes_to_part(score: stream.Score):
 
     if not len(score.parts):
@@ -39,32 +56,54 @@ def add_notes_to_part(score: stream.Score):
         if not entry:
             continue
         
+        entry = entry.replace(",", " ").replace("  ", " ").strip()
+        entries = entry.split()
+        
+        total_notes = 0
+        for token in entries:
+            if "*" in token:
+                _, times = token.split("*")
+                total_notes += int(times)
+            else:
+                total_notes += 1
+        print(f"{total_notes} note element(s) will be added to instrument part.")
+        
         dur_input = input("Enter duration (e.g., quarter, half, eighth, 1.0): ").strip()
         io_manager.save_user_input(f"Duration entry: {dur_input}")
+        
+        dur_list = parse_durations(dur_input, total_notes)
+        
+        print(f"{len(dur_list)} duration(s) added to instrument part note(s).")
 
-        try:
-            d = duration.Duration(dur_input)
-        except Exception:
-            print("Invalid duration. Defaulting to quarter.")
-            d = duration.Duration("quarter")
+        for token, d in zip(entries, dur_list):
+            try:
+                if "*" in token:
+                    pitch_token, times = token.split("*")
+                    times = int(times)
+                else:
+                    pitch_token = token
+                    times = 1
+                
+                for _ in range(times):    
+                    if pitch_token.lower() in ("rest", "r"):
+                        element = note.Rest()
+                    elif "+" in token:
+                        pitches = [p.strip() for p in pitch_token.split("+")]
+                        element = chord.Chord(pitches)
+                    else:
+                        element = note.Note(pitch_token)
+                
+                    element.duration = d
+                    part.append(element)
+                
+                    if isinstance(element, note.Note):
+                        print(f"Added note: {element.nameWithOctave} ({d.type})")
+                    elif isinstance(element, chord.Chord):
+                        print(f"Added chord: {'+'.join(p.nameWithOctave for p in element.pitches)} ({d.type})")
+                    else:
+                        print(f"Added rest ({d.type})")
+                
+            except Exception as e:
+                print(f"Could not create element '{token}': {e}")           
 
-        element = None
-        try:
-            if entry.lower() == "rest":
-                element = note.Rest()
-            elif "+" in entry:
-                pitches = [p.strip() for p in entry.split("+")]
-                element = chord.Chord(pitches)
-            else:
-                element = note.Note(entry)
-            
-            element.duration = d
-            part.append(element)
-            print(f"Added: {element} ({d.type})")
-        except Exception as e:
-            print(f"Could not create element: {e}")
-    
     print(f"Finished editing {part.partName or 'Unnamed Part'}.")
-
-def edit_notes(score: stream.Score):
-    print("\nEditing tools will come in Stage 4.")

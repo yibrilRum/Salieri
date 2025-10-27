@@ -1,4 +1,4 @@
-from music21 import instrument, stream, clef
+from music21 import instrument, stream, clef, key, meter, tempo, stream
 from scorecreator import io_manager
 
 def instrument_maker_menu() -> stream.Part:
@@ -36,6 +36,30 @@ def instrument_maker_menu() -> stream.Part:
     elif clef_choice == "none":
         pass
     
+    ks_input = input("Enter key signature (number or sharps/flats, e.g., 0, -3, 2): ").strip()
+    if ks_input:
+        try:
+            ks = key.KeySignature(int(ks_input))
+            part.insert(0, ks)
+        except Exception:
+            print("Invalid key signature. Skipping.")
+    
+    ts_input = input("Enter time signature (e.g., 4/4, 3/4): ").strip()
+    if ts_input:
+        try:
+            ts = meter.TimeSignature(ts_input)
+            part.insert(0, ts)
+        except Exception:
+            print("Invalid time signature. Skipping.")
+        
+    tempo_input = input("Enter tempo (BPM, e.g., 120): ").strip()
+    if tempo_input:
+        try:
+            mm = tempo.MetronomeMark(number=float(tempo_input))
+            part.insert(0, mm)
+        except Exception:
+            print("Invalid tempo. Skipping.")
+    
     print(f"Created part: {part.partName or instr_class.__name__}")
     return part
 
@@ -65,3 +89,41 @@ def resolve_instrument(choice, available_list):
 
 def add_more_notes_to_existing(score: stream.Score):
     print("Almost there")
+    
+def delete_instrument(score: stream.Score):
+    if not len(score.parts):
+        print("No instrument parts available to delete.")
+        return
+    
+    print("\n--- Delete Instrument Part ---")
+    for i, part in enumerate(score.parts, 1):
+        print(f"{i}. {part.partName or f'Part {i}'}")
+    
+    choice = input("Select part number to delete: ").strip()
+    io_manager.save_user_input(f"Delete instrument selection: {choice}")
+    
+    try:
+        index = int(choice) - 1
+        part = score.parts[index]
+    except (ValueError, IndexError):
+        print("Invalid selection.")
+        return
+    
+    confirm = input(f"Delete '{part.partName or f'Part {index+1}'}'? (y/N): ").strip().lower()
+    io_manager.save_user_input(f"Delete instrument confirm: {confirm}")
+    if confirm != "y":
+        print("Cancelled.")
+        return
+    
+    try:
+        if part in score.parts:
+            score.parts.remove(part)
+        else:
+            score.remove(part, recurse=True)
+        print(f"Deleted: {part.partName or f'Part {index+1}'}")
+    except Exception as e:
+        print(f"Error deleting instrument: {e}")
+        
+    for i, p in enumerate(score.parts, 1):
+        if not p.partName:
+            p.partName = f"Part {i}"

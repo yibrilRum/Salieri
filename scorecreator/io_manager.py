@@ -2,6 +2,7 @@ import os
 import pickle
 import datetime
 from music21 import stream, converter
+from scorecreator import project_paths
 from scorecreator.project_paths import project_path, log_path, ensure_project_dir
 
 def save_project(score: stream.Score):
@@ -9,10 +10,6 @@ def save_project(score: stream.Score):
 
     print("\n--- Save Project ---")
     filename = input("Enter a filename (e.g., song.xml or song.m21data): ").strip()
-
-    if not filename:
-        print("A filename is required.")
-        return
     
     save_user_input(f"Save project filename: {filename}")
     path = project_path(filename)
@@ -20,7 +17,7 @@ def save_project(score: stream.Score):
     try:
         if filename.endswith(".xml"):
             score.write("musicxml", fp=path)
-            print(f"Project saed as MusicXML: {path}")
+            print(f"Project saved as MusicXML: {path}")
         elif filename.endswith(".m21data"):
             with open(path, "wb") as f:
                 pickle.dump(score, f)
@@ -31,7 +28,6 @@ def save_project(score: stream.Score):
         print(f"Error saving project: {e}")
 
 def load_project(filename: str) -> stream.Score:
-
     ensure_project_dir()
     path = project_path(filename)
 
@@ -78,10 +74,10 @@ def start_new_session_log():
         f.write(f"\n--- New Session Started at {timestamp} ---\n")
 
 def list_saved_projects():
-    project_paths.ensure_project_dir()
+    ensure_project_dir()
     project_dir = project_paths.get_project_dir()
     try:
-        files [f for f in os.listdir(project_dir) if f.endswith((".xml", ".m21data"))]
+        files = [f for f in os.listdir(project_dir) if f.endswith((".xml", ".m21data"))]
         return sorted(files)
     except Exception as e:
         print(f"Error listing projects: {e}")
