@@ -116,10 +116,10 @@ def delete_instrument(score: stream.Score):
         return
     
     try:
-        if part in score.parts:
-            score.parts.remove(part)
-        else:
-            score.remove(part, recurse=True)
+        score.remove(part, recurse=True)
+        score.coreGatherMissingSpanners()
+        score.coreElementsChanged()
+        
         print(f"Deleted: {part.partName or f'Part {index+1}'}")
     except Exception as e:
         print(f"Error deleting instrument: {e}")
@@ -127,3 +127,41 @@ def delete_instrument(score: stream.Score):
     for i, p in enumerate(score.parts, 1):
         if not p.partName:
             p.partName = f"Part {i}"
+            
+def reorder_instruments(score: stream.Score):
+    if not len(score.parts):
+        print("No instrumnt parts available to reorder.")
+        
+        print("\n--- Reoder instrument parts ---")
+        print("Current order:")
+        for i, part in enumerate(score.parts, 1):
+            print(f"{i}. {part.partName or f'Part{i}'}")
+        
+    print("\nEnter the new order as a comma-space-separated list of indices (e.g. 2, 1, 3)")
+    new_order_input = input("New order: ").strip()
+    io_manager.save_user_input(f"Reorder instrument order: {new_order_input}")
+    
+    try:
+        new_indices = [int(x) - 1 for x in new_order_input.split(", ")]
+        if sorted(new_indices) != list(range(len(score.parts))):
+            print("Invalid order. Must include all part numbers exactly once.")
+            return
+    except Exception:
+        print("Invalid input format.")
+        return
+    
+    try:
+        new_parts = [score.parts[i] for i in new_indices]
+        
+        score.parts.clear()
+        for p in new_parts:
+            score.insert(0, p)
+        
+        score.coreGatherMissingSpanners()
+        score.coreElementsChanged()
+        
+        print("\nReordered instruments successfully! New order:")
+        for i, part in enumerate(score.parts, 1):
+            print(f"{i}.  {part.partName or f'Part{i}'}")
+    except Exception as e:
+        print(f"Error reordering the instruments: {e}")

@@ -31,7 +31,7 @@ def save_project(score: stream.Score):
         return
     
     io_manager.save_user_input(f"Save project filename: {filename}")
-    path = project_paths.project_paths(filename)
+    path = project_paths.project_path(filename)
 
     try:
         if filename.endswith(".xml"):

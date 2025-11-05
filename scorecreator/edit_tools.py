@@ -156,7 +156,9 @@ def delete_element(part: stream.Part):
 
     try:
         target = elements[int(index) - 1]
-        part.remove(target)
+        part.remove(target, recurse=True)
+        part.coreGatherMissingSpanners()
+        part.coreElementsChanged()
         print("Element removed.")
     except (IndexError, ValueError):
         print("Invalid index.")
@@ -190,12 +192,15 @@ def apply_action_to_targets(part: stream.Part, targets: list, action: str, value
         for el in list(targets):
             try:
                 parent = el.getContextByClass(stream.Part) or part
-                parent.remove(el)
+                parent.remove(el, recurse=True)
             except Exception:
                 try:
-                    part.remove(el)
+                    part.remove(el, recurse=True)
                 except Exception:
                     pass
+        
+        part.coreGatherMissingSpanners()
+        part.coreElementsChanged()
 
     elif action == "transpose":
         if value is None:
@@ -206,6 +211,7 @@ def apply_action_to_targets(part: stream.Part, targets: list, action: str, value
                 el.transpose(semis, inPlace=True)
             except Exception:
                 pass
+        part.coreElementsChanged()
 
     elif action == "restify":
         for el in list(targets):
@@ -215,14 +221,13 @@ def apply_action_to_targets(part: stream.Part, targets: list, action: str, value
                 dur = el.duration
                 r = note.Rest()
                 r.duration = dur
-                parent.remove(el)
+                parent.remove(el, recurse=True)
                 parent.insert(offset, r)
             except Exception as e:
                 print(f"Warning: could not restify element: {e}")
-            
+        
         part.coreGatherMissingSpanners()
-        part._elements = [el for el in part._elements if el is not None]
-        part.elementsChanged()
+        part.coreElementsChanged()
     
     else:
         raise ValueError(f"Unsupported action: {action}")
