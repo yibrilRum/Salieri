@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 projects/logs/
+__pycache__/
+*.pyc
